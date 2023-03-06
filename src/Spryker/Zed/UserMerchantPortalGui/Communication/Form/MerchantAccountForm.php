@@ -214,6 +214,7 @@ class MerchantAccountForm extends AbstractType
                     new Email(),
                     $this->getFactory()->createUniqueUserEmailConstraint($formData[static::KEY_ID_USER]),
                 ],
+                'sanitize_xss' => true,
             ]);
 
         return $this;
