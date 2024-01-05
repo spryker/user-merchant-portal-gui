@@ -73,7 +73,7 @@ class MyAccountController extends AbstractController
 
         $response = [
             'merchantAccountForm' => $merchantAccountForm->createView(),
-            'urlChangePassword' => static::ROUTE_CHANGE_PASSWORD,
+            'urlChangePassword' => static::URL_CHANGE_PASSWORD,
             'urlChangeEmail' => static::ROUTE_CHANGE_EMAIL,
             'isEmailUpdatePasswordVerificationEnabled' => $this->getFactory()->getConfig()->isEmailUpdatePasswordVerificationEnabled(),
         ];
