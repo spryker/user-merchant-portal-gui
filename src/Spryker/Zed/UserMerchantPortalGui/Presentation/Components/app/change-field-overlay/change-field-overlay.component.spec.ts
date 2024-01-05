@@ -1,49 +1,67 @@
-import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { TestBed } from '@angular/core/testing';
-import { createComponentWrapper, getTestingForComponent } from '@mp/zed-ui/testing';
-import { ChangeFieldOverlayComponent } from './change-field-overlay.component';
+import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
+import { ChangeFieldOverlayModule } from './change-field-overlay.module';
 
 describe('ChangeFieldOverlayComponent', () => {
-    const { testModule, createComponent } = getTestingForComponent(ChangeFieldOverlayComponent, {
-        ngModule: { schemas: [NO_ERRORS_SCHEMA] },
-        projectContent: `
-            <span title></span>
-            <span action></span>
-            <span class="default-slot"></span>
+    let component: TestComponent;
+    let fixture: ComponentFixture<TestComponent>;
+
+    @Component({
+        selector: 'test',
+        template: `
+            <mp-change-field-overlay>
+                <h3 title class="test-title">Title</h3>
+                <spy-button action type="submit" class="test-action"> Button </spy-button>
+
+                <div class="test-content">Content</div>
+            </mp-change-field-overlay>
         `,
-    });
+    })
+    class TestComponent {}
+
+    beforeEach(async(() => {
+        TestBed.configureTestingModule({
+            imports: [ChangeFieldOverlayModule],
+            declarations: [TestComponent],
+            schemas: [CUSTOM_ELEMENTS_SCHEMA],
+        }).compileComponents();
+    }));
 
     beforeEach(() => {
-        TestBed.configureTestingModule({
-            imports: [testModule],
+        fixture = TestBed.createComponent(TestComponent);
+        component = fixture.componentInstance;
+
+        fixture.detectChanges();
+    });
+
+    it('should create component', () => {
+        expect(component).toBeTruthy();
+    });
+
+    describe('Change field overlay header', () => {
+        it('should render component header', () => {
+            const headerElem = fixture.debugElement.query(By.css('spy-headline'));
+
+            expect(headerElem).toBeTruthy();
+        });
+
+        it('should render projected title inside header', () => {
+            const titleElem = fixture.debugElement.query(By.css('.test-title'));
+
+            expect(titleElem).toBeTruthy();
+        });
+
+        it('should render projected action inside header', () => {
+            const actionElem = fixture.debugElement.query(By.css('.test-action'));
+
+            expect(actionElem).toBeTruthy();
         });
     });
 
-    it('should render <spy-headline> component', async () => {
-        const host = await createComponentWrapper(createComponent);
-        const headlineComponent = host.queryCss('spy-headline');
+    it('should render projected content inside component', () => {
+        const contentElem = fixture.debugElement.query(By.css('.test-content'));
 
-        expect(headlineComponent).toBeTruthy();
-    });
-
-    it('should render `title` slot to the <spy-headline> component', async () => {
-        const host = await createComponentWrapper(createComponent);
-        const titleSlot = host.queryCss('spy-headline [title]');
-
-        expect(titleSlot).toBeTruthy();
-    });
-
-    it('should render `action` slot to the <spy-headline> component', async () => {
-        const host = await createComponentWrapper(createComponent);
-        const actionSlot = host.queryCss('spy-headline [action]');
-
-        expect(actionSlot).toBeTruthy();
-    });
-
-    it('should render default slot to the `.mp-change-field-overlay__content` element', async () => {
-        const host = await createComponentWrapper(createComponent);
-        const defaultSlot = host.queryCss('.mp-change-field-overlay__content .default-slot');
-
-        expect(defaultSlot).toBeTruthy();
+        expect(contentElem.nativeElement.textContent).toMatch('Content');
     });
 });
