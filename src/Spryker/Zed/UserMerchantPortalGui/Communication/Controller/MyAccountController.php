@@ -23,14 +23,14 @@ class MyAccountController extends AbstractController
     /**
      * @var string
      */
-    protected const ROUTE_MERCHANT_MY_ACCOUNT = '/user-merchant-portal-gui/my-account';
+    protected const URL_MERCHANT_MY_ACCOUNT = '/user-merchant-portal-gui/my-account';
 
     /**
      * @see \Spryker\Zed\UserMerchantPortalGui\Communication\Controller\ChangePasswordController::indexAction()
      *
      * @var string
      */
-    protected const ROUTE_CHANGE_PASSWORD = '/user-merchant-portal-gui/change-password';
+    protected const URL_CHANGE_PASSWORD = '/user-merchant-portal-gui/change-password';
 
     /**
      * @see \Spryker\Zed\UserMerchantPortalGui\Communication\Controller\ChangeEmailController::indexAction()
@@ -90,7 +90,7 @@ class MyAccountController extends AbstractController
 
         $this->handleFormSubmission($merchantAccountForm);
 
-        return new RedirectResponse(static::ROUTE_MERCHANT_MY_ACCOUNT);
+        return new RedirectResponse(static::URL_MERCHANT_MY_ACCOUNT);
     }
 
     /**

@@ -7,7 +7,6 @@
 {% endblock %}
 
 {% block content %}
-    {# @deprecated Variable `actionConfig` is deprecated. Use `changePasswordActionConfig` instead. #}
     {% set actionConfig = '{
         "type": "drawer",
         "component": "ajax-form",
@@ -17,16 +16,6 @@
             }
         }
     }' %}
-
-    {% set changePasswordActionConfig = {
-        type: 'drawer',
-        component: 'ajax-form',
-        options: {
-            inputs: {
-                action: url(urlChangePassword)
-            }
-        }
-    } %}
 
     {% set changeEmailActionConfig = {
         type: 'drawer',
@@ -70,7 +59,7 @@
             </web-spy-card>
 
             <web-spy-card class="mp-my-account__card" cloak spy-title="{{ 'Password' | trans }}">
-                <web-spy-button-action type="button" variant="outline" size="sm" action="{{ changePasswordActionConfig | json_encode }}">
+                <web-spy-button-action type="button" variant="outline" size="sm" action="{{ actionConfig }}">
                     {{ 'Change password' | trans }}
                 </web-spy-button-action>
             </web-spy-card>
