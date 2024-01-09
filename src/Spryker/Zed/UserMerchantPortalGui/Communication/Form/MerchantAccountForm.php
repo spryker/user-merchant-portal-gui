@@ -22,11 +22,20 @@ use Symfony\Component\Validator\Constraints\Regex;
 
 /**
  * @method \Spryker\Zed\UserMerchantPortalGui\Communication\UserMerchantPortalGuiCommunicationFactory getFactory()
- * @method \Spryker\Zed\UserMerchantPortalGui\Business\UserMerchantPortalGuiFacadeInterface getFacade()
  * @method \Spryker\Zed\UserMerchantPortalGui\UserMerchantPortalGuiConfig getConfig()
  */
 class MerchantAccountForm extends AbstractType
 {
+    /**
+     * @var string
+     */
+    public const FIELD_USERNAME = 'username';
+
+    /**
+     * @var string
+     */
+    public const OPTION_IS_EMAIL_UNIQUENESS_VALIDATION_ENABLED = 'is_email_uniqueness_validation_enabled';
+
     /**
      * @var string
      */
@@ -46,11 +55,6 @@ class MerchantAccountForm extends AbstractType
      * @var string
      */
     protected const FIELD_LAST_NAME = 'last_name';
-
-    /**
-     * @var string
-     */
-    protected const FIELD_USERNAME = 'username';
 
     /**
      * @var string
@@ -126,6 +130,7 @@ class MerchantAccountForm extends AbstractType
         $resolver->setRequired(static::OPTIONS_LOCALE);
 
         $resolver->setDefaults([
+            static::OPTION_IS_EMAIL_UNIQUENESS_VALIDATION_ENABLED => true,
             'validation_groups' => function (FormInterface $form) {
                 $defaultData = $form->getConfig()->getData();
                 $submittedData = $form->getData();
@@ -151,12 +156,12 @@ class MerchantAccountForm extends AbstractType
      *
      * @return void
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $this
             ->addFirstNameField($builder)
             ->addLastNameField($builder)
-            ->addEmailField($builder)
+            ->addEmailField($builder, $options)
             ->addFkLocaleField($builder, $options)
             ->addSaveButton($builder);
     }
@@ -201,20 +206,27 @@ class MerchantAccountForm extends AbstractType
 
     /**
      * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     * @param array<string, mixed> $options
      *
      * @return $this
      */
-    protected function addEmailField(FormBuilderInterface $builder)
+    protected function addEmailField(FormBuilderInterface $builder, array $options)
     {
         $formData = $builder->getData();
+
+        $constraints = [
+            new NotBlank(),
+            new Email(),
+        ];
+
+        if ($options[static::OPTION_IS_EMAIL_UNIQUENESS_VALIDATION_ENABLED]) {
+            $constraints[] = $this->getFactory()->createUniqueUserEmailConstraint($formData[static::KEY_ID_USER]);
+        }
+
         $builder
             ->add(static::FIELD_USERNAME, TextType::class, [
                 'label' => static::LABEL_USERNAME,
-                'constraints' => [
-                    new NotBlank(),
-                    new Email(),
-                    $this->getFactory()->createUniqueUserEmailConstraint($formData[static::KEY_ID_USER]),
-                ],
+                'constraints' => $constraints,
                 'disabled' => $this->getConfig()->isEmailUpdatePasswordVerificationEnabled(),
                 'sanitize_xss' => true,
             ]);

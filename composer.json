@@ -9,12 +9,13 @@
         "spryker/kernel": "^3.30.0",
         "spryker/locale": "^3.2.0",
         "spryker/merchant-user": "^1.2.0",
+        "spryker/security-blocker": "^1.2.0",
         "spryker/symfony": "^3.0.0",
         "spryker/transfer": "^3.27.0",
         "spryker/translator": "^1.1.0",
         "spryker/user-locale": "^1.0.0",
         "spryker/user-merchant-portal-gui-extension": "^1.0.0",
-        "spryker/zed-ui": "^1.6.0"
+        "spryker/zed-ui": "^1.8.0"
     },
     "require-dev": {
         "spryker/code-sniffer": "*",

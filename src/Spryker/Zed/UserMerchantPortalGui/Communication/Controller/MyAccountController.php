@@ -8,6 +8,7 @@
 namespace Spryker\Zed\UserMerchantPortalGui\Communication\Controller;
 
 use Generated\Shared\Transfer\MerchantUserTransfer;
+use Generated\Shared\Transfer\SecurityCheckAuthContextTransfer;
 use Spryker\Zed\Kernel\Communication\Controller\AbstractController;
 use Spryker\Zed\UserMerchantPortalGui\Communication\Form\MerchantAccountForm;
 use Symfony\Component\Form\FormInterface;
@@ -55,19 +56,30 @@ class MyAccountController extends AbstractController
     protected const MESSAGE_MERCHANT_USER_VALIDATION_ERROR = 'Please resolve all errors.';
 
     /**
+     * @var string
+     */
+    protected const INFO_MESSAGE_EMAIL_CHANGING_BLOCKED = 'Email changing has been blocked due to too many attempts.';
+
+    /**
+     * @var string
+     */
+    protected const SECURITY_BLOCKER_IDENTIFIER = 'email-change';
+
+    /**
      * @param \Symfony\Component\HttpFoundation\Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|array
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|array<string, mixed>
      */
     public function indexAction(Request $request)
     {
+        $isEmailChangingBlocked = $this->isEmailChangingBlocked($request);
         $merchantAccountFormDataProvider = $this->getFactory()
             ->createMerchantAccountFormDataProvider();
 
         $merchantAccountForm = $this->getFactory()
             ->createMerchantAccountForm(
                 $merchantAccountFormDataProvider->getData(),
-                $merchantAccountFormDataProvider->getOptions(),
+                $merchantAccountFormDataProvider->getOptions(!$isEmailChangingBlocked),
             )
             ->handleRequest($request);
 
@@ -82,29 +94,73 @@ class MyAccountController extends AbstractController
             return $this->viewResponse($response);
         }
 
+        if ($isEmailChangingBlocked) {
+            $this->addInfoMessage(static::INFO_MESSAGE_EMAIL_CHANGING_BLOCKED);
+        }
+
+        $securityCheckAuthContextTransfer = (new SecurityCheckAuthContextTransfer())
+            ->setIp($request->getClientIp())
+            ->setAccount(static::SECURITY_BLOCKER_IDENTIFIER)
+            ->setType($this->getFactory()->getConfig()->getSecurityBlockerMerchantPortalUserEntityType());
+
+        $this->getFactory()->getSecurityBlockerClient()->incrementLoginAttemptCount($securityCheckAuthContextTransfer);
+
         if (!$merchantAccountForm->isValid()) {
             $this->addErrorMessage(static::MESSAGE_MERCHANT_USER_VALIDATION_ERROR);
 
             return $this->viewResponse($response);
         }
 
-        $this->handleFormSubmission($merchantAccountForm);
+        $this->handleFormSubmission($merchantAccountForm, $isEmailChangingBlocked);
 
         return new RedirectResponse(static::URL_MERCHANT_MY_ACCOUNT);
     }
 
     /**
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     *
+     * @return bool
+     */
+    protected function isEmailChangingBlocked(Request $request): bool
+    {
+        $userMerchantPortalGuiConfig = $this->getFactory()->getConfig();
+
+        if (!$userMerchantPortalGuiConfig->isSecurityBlockerForMerchantUserEmailChangingEnabled()) {
+            return false;
+        }
+
+        $securityCheckAuthContextTransfer = (new SecurityCheckAuthContextTransfer())
+            ->setIp($request->getClientIp())
+            ->setAccount(static::SECURITY_BLOCKER_IDENTIFIER)
+            ->setType($userMerchantPortalGuiConfig->getSecurityBlockerMerchantPortalUserEntityType());
+
+        return $this
+            ->getFactory()
+            ->getSecurityBlockerClient()
+            ->isAccountBlocked($securityCheckAuthContextTransfer)
+            ->getIsBlockedOrFail();
+    }
+
+    /**
      * @param \Symfony\Component\Form\FormInterface $merchantAccountForm
+     * @param bool $isEmailChangingBlocked
      *
      * @return void
      */
-    protected function handleFormSubmission(FormInterface $merchantAccountForm): void
-    {
+    protected function handleFormSubmission(
+        FormInterface $merchantAccountForm,
+        bool $isEmailChangingBlocked
+    ): void {
         $merchantUserFacade = $this->getFactory()->getMerchantUserFacade();
-
         $merchantUserTransfer = $merchantUserFacade->getCurrentMerchantUser();
+        $merchantAccountFormData = $merchantAccountForm->getData();
+
+        if ($isEmailChangingBlocked) {
+            unset($merchantAccountFormData[MerchantAccountForm::FIELD_USERNAME]);
+        }
+
         $merchantUserTransfer->getUserOrFail()
-            ->fromArray($merchantAccountForm->getData(), true);
+            ->fromArray($merchantAccountFormData, true);
 
         $merchantUserResponseTransfer = $merchantUserFacade
             ->updateMerchantUser($merchantUserTransfer);

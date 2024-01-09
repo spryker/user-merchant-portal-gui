@@ -7,6 +7,8 @@
 
 namespace Spryker\Zed\UserMerchantPortalGui\Communication\Form\DataProvider;
 
+use Generated\Shared\Transfer\LocaleConditionsTransfer;
+use Generated\Shared\Transfer\LocaleCriteriaTransfer;
 use Spryker\Zed\UserMerchantPortalGui\Communication\Form\MerchantAccountForm;
 use Spryker\Zed\UserMerchantPortalGui\Dependency\Facade\UserMerchantPortalGuiToLocaleFacadeInterface;
 use Spryker\Zed\UserMerchantPortalGui\Dependency\Facade\UserMerchantPortalGuiToMerchantUserFacadeInterface;
@@ -36,14 +38,17 @@ class MerchantAccountFormDataProvider implements MerchantAccountFormDataProvider
     }
 
     /**
+     * @param bool $isEmailUniquenessValidationEnabled
+     *
      * @return array<mixed>
      */
-    public function getOptions(): array
+    public function getOptions(bool $isEmailUniquenessValidationEnabled = true): array
     {
         return [
             MerchantAccountForm::OPTIONS_LOCALE => array_flip(
                 $this->localeFacade->getAvailableLocales(),
             ),
+            MerchantAccountForm::OPTION_IS_EMAIL_UNIQUENESS_VALIDATION_ENABLED => $isEmailUniquenessValidationEnabled,
         ];
     }
 
