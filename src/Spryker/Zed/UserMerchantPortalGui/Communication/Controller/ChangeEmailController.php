@@ -75,14 +75,18 @@ class ChangeEmailController extends AbstractController
             return new JsonResponse($responseData);
         }
 
+        $userMerchantPortalGuiConfig = $this->getFactory()->getConfig();
         $merchantUserTransfer = $this->getFactory()->getMerchantUserFacade()->getCurrentMerchantUser();
         $changeEmailFormData = $changeEmailForm->getData();
 
-        if ($merchantUserTransfer->getUserOrFail()->getUsernameOrFail() !== $changeEmailFormData[ChangeEmailForm::FIELD_EMAIL]) {
+        if (
+            $userMerchantPortalGuiConfig->isSecurityBlockerForMerchantUserEmailChangingEnabled() &&
+            $merchantUserTransfer->getUserOrFail()->getUsernameOrFail() !== $changeEmailFormData[ChangeEmailForm::FIELD_EMAIL]
+        ) {
             $securityCheckAuthContextTransfer = (new SecurityCheckAuthContextTransfer())
                 ->setIp($request->getClientIp())
                 ->setAccount(static::SECURITY_BLOCKER_IDENTIFIER)
-                ->setType($this->getFactory()->getConfig()->getSecurityBlockerMerchantPortalUserEntityType());
+                ->setType($userMerchantPortalGuiConfig->getSecurityBlockerMerchantPortalUserEntityType());
 
             $this->getFactory()->getSecurityBlockerClient()->incrementLoginAttemptCount($securityCheckAuthContextTransfer);
         }
