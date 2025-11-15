@@ -5,7 +5,7 @@
  * Use of this software requires acceptance of the Spryker Marketplace License Agreement. See LICENSE file.
  */
 
-namespace SprykerTest\Zed\SecurityMerchantPortalGui\Communication\Plugin\Security;
+namespace SprykerTest\Zed\UserMerchantPortalGui\Communication\Form\Constraint;
 
 use Generated\Shared\Transfer\MerchantUserTransfer;
 use Generated\Shared\Transfer\UserTransfer;
@@ -21,10 +21,10 @@ use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
  *
  * @group SprykerTest
  * @group Zed
- * @group SecurityMerchantPortalGui
+ * @group UserMerchantPortalGui
  * @group Communication
- * @group Plugin
- * @group Security
+ * @group Form
+ * @group Constraint
  * @group CurrentPasswordConstraintValidatorTest
  * Add your own group annotations below this line
  */
