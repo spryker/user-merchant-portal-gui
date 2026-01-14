@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
 
 @Component({
+    standalone: false,
     selector: 'mp-change-field-overlay',
     templateUrl: './change-field-overlay.component.html',
     styleUrls: ['./change-field-overlay.component.less'],

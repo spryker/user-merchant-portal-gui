@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
 
 @Component({
+    standalone: false,
     selector: 'mp-change-password-overlay',
     templateUrl: './change-password-overlay.component.html',
     styleUrls: ['./change-password-overlay.component.less'],

@@ -5,8 +5,8 @@
 @change-field-overlay-form-control-max-width: var(--spy-change-field-overlay-form-control-max-width, 400px);
 
 .mp-change-field-overlay {
-    .@{headline-prefix-cls},
-    .@{card-prefix-cls}-body {
+    .spy-headline,
+    .ant-card-body {
         padding-bottom: 0;
 
         &__title {
@@ -17,7 +17,7 @@
         }
     }
 
-    .@{form-item-prefix-cls}-control {
+    .ant-form-item-control {
         max-width: @change-field-overlay-form-control-max-width;
     }
 

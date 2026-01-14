@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
 
 @Component({
+    standalone: false,
     selector: 'mp-my-account',
     templateUrl: './my-account.component.html',
     styleUrls: ['./my-account.component.less'],
