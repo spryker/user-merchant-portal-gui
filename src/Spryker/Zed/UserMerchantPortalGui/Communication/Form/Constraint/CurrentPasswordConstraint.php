@@ -22,17 +22,11 @@ class CurrentPasswordConstraint extends Constraint
      */
     protected UserMerchantPortalGuiToMerchantUserFacadeInterface $merchantUserFacade;
 
-    /**
-     * @return \Spryker\Zed\UserMerchantPortalGui\Dependency\Facade\UserMerchantPortalGuiToMerchantUserFacadeInterface
-     */
     public function getMerchantUserFacade(): UserMerchantPortalGuiToMerchantUserFacadeInterface
     {
         return $this->merchantUserFacade;
     }
 
-    /**
-     * @return string
-     */
     public function getMessage(): string
     {
         return 'The value is incorrect. Please try again.';

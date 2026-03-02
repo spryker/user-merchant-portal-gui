@@ -106,19 +106,11 @@ class MerchantAccountForm extends AbstractType
      */
     protected const PATTERN_LAST_NAME = '/^[^:\/<>]+$/';
 
-    /**
-     * @return string
-     */
     public function getBlockPrefix(): string
     {
         return static::FORM_NAME;
     }
 
-    /**
-     * @param \Symfony\Component\OptionsResolver\OptionsResolver $resolver
-     *
-     * @return void
-     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         parent::configureOptions($resolver);
@@ -261,17 +253,11 @@ class MerchantAccountForm extends AbstractType
         return $this;
     }
 
-    /**
-     * @return \Symfony\Component\Validator\Constraints\NotBlank
-     */
     protected function createNotBlankConstraint(): NotBlank
     {
         return new NotBlank();
     }
 
-    /**
-     * @return \Symfony\Component\Validator\Constraints\Regex
-     */
     protected function createFirstNameRegexConstraint(): Regex
     {
         return new Regex([
@@ -279,9 +265,6 @@ class MerchantAccountForm extends AbstractType
         ]);
     }
 
-    /**
-     * @return \Symfony\Component\Validator\Constraints\Regex
-     */
     protected function createLastNameRegexConstraint(): Regex
     {
         return new Regex([

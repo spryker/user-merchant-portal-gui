@@ -11,19 +11,11 @@ use Exception;
 
 class MerchantUserNotFoundException extends Exception
 {
-    /**
-     * @param int $idUser
-     */
     public function __construct(int $idUser)
     {
         parent::__construct($this->buildMessage($idUser));
     }
 
-    /**
-     * @param int $idUser
-     *
-     * @return string
-     */
     protected function buildMessage(int $idUser): string
     {
         return sprintf(

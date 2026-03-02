@@ -17,9 +17,6 @@ class ChangeEmailFormDataProvider
      */
     protected UserMerchantPortalGuiToMerchantUserFacadeInterface $merchantUserFacade;
 
-    /**
-     * @param \Spryker\Zed\UserMerchantPortalGui\Dependency\Facade\UserMerchantPortalGuiToMerchantUserFacadeInterface $merchantUserFacade
-     */
     public function __construct(
         UserMerchantPortalGuiToMerchantUserFacadeInterface $merchantUserFacade
     ) {

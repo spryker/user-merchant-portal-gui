@@ -25,10 +25,6 @@ class MerchantAccountFormDataProvider implements MerchantAccountFormDataProvider
      */
     protected UserMerchantPortalGuiToMerchantUserFacadeInterface $merchantUserFacade;
 
-    /**
-     * @param \Spryker\Zed\UserMerchantPortalGui\Dependency\Facade\UserMerchantPortalGuiToLocaleFacadeInterface $localeFacade
-     * @param \Spryker\Zed\UserMerchantPortalGui\Dependency\Facade\UserMerchantPortalGuiToMerchantUserFacadeInterface $merchantUserFacade
-     */
     public function __construct(
         UserMerchantPortalGuiToLocaleFacadeInterface $localeFacade,
         UserMerchantPortalGuiToMerchantUserFacadeInterface $merchantUserFacade
@@ -61,9 +57,6 @@ class MerchantAccountFormDataProvider implements MerchantAccountFormDataProvider
             ->toArray();
     }
 
-    /**
-     * @return array
-     */
     protected function getLocales(): array
     {
         $localeCriteriaTransfer = (new LocaleCriteriaTransfer())

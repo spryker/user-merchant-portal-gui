@@ -32,11 +32,6 @@ class ChangePasswordController extends AbstractController
      */
     protected const ERROR_ACCESS_DENIED_CAUSE = 'access_denied';
 
-    /**
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
-     */
     public function indexAction(Request $request): JsonResponse
     {
         $changePasswordForm = $this->getFactory()

@@ -46,11 +46,6 @@ class ChangeEmailController extends AbstractController
      */
     protected const SECURITY_BLOCKER_IDENTIFIER = 'email-change';
 
-    /**
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
-     */
     public function indexAction(Request $request): JsonResponse
     {
         $isEmailChangingBlocked = $this->isEmailChangingBlocked($request);
@@ -167,11 +162,6 @@ class ChangeEmailController extends AbstractController
         return new JsonResponse($responseData);
     }
 
-    /**
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     *
-     * @return bool
-     */
     protected function isEmailChangingBlocked(Request $request): bool
     {
         $userMerchantPortalGuiConfig = $this->getFactory()->getConfig();

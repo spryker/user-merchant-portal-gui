@@ -124,11 +124,6 @@ class MyAccountController extends AbstractController
         return new RedirectResponse(static::ROUTE_MERCHANT_MY_ACCOUNT);
     }
 
-    /**
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     *
-     * @return bool
-     */
     protected function isEmailChangingBlocked(Request $request): bool
     {
         $userMerchantPortalGuiConfig = $this->getFactory()->getConfig();
@@ -149,13 +144,6 @@ class MyAccountController extends AbstractController
             ->getIsBlockedOrFail();
     }
 
-    /**
-     * @param \Symfony\Component\Form\FormInterface $merchantAccountForm
-     * @param \Generated\Shared\Transfer\MerchantUserTransfer $merchantUserTransfer
-     * @param bool $isEmailChangingBlocked
-     *
-     * @return void
-     */
     protected function handleFormSubmission(
         FormInterface $merchantAccountForm,
         MerchantUserTransfer $merchantUserTransfer,
@@ -190,12 +178,6 @@ class MyAccountController extends AbstractController
         $this->addSuccessMessage(static::MESSAGE_MERCHANT_USER_UPDATE_SUCCESS);
     }
 
-    /**
-     * @param \Symfony\Component\Form\FormInterface $merchantAccountForm
-     * @param \Generated\Shared\Transfer\MerchantUserTransfer $merchantUserTransfer
-     *
-     * @return \Generated\Shared\Transfer\MerchantUserTransfer
-     */
     protected function switchLocaleIfChanged(
         FormInterface $merchantAccountForm,
         MerchantUserTransfer $merchantUserTransfer
@@ -215,11 +197,6 @@ class MyAccountController extends AbstractController
         return $merchantUserTransfer;
     }
 
-    /**
-     * @param \Symfony\Component\Form\FormInterface $merchantAccountForm
-     *
-     * @return bool
-     */
     protected function getIsFkLocaleChanged(FormInterface $merchantAccountForm): bool
     {
         $defaultData = $merchantAccountForm->getConfig()->getData();

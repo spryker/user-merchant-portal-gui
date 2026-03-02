@@ -68,9 +68,6 @@ class ChangePasswordForm extends AbstractType
      */
     protected const MESSAGE_PASSWORDS_NOT_MATCHING = 'The value needs to match the New Password input.';
 
-    /**
-     * @return string
-     */
     public function getBlockPrefix(): string
     {
         return static::FORM_NAME;

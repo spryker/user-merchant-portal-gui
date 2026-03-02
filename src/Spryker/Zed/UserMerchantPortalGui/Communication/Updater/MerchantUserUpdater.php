@@ -36,11 +36,6 @@ class MerchantUserUpdater implements MerchantUserUpdaterInterface
         $this->merchantUserPostChangePlugins = $merchantUserPostChangePlugins;
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\MerchantUserTransfer $merchantUserTransfer
-     *
-     * @return void
-     */
     public function updateMerchantUser(MerchantUserTransfer $merchantUserTransfer): void
     {
         $this->merchantUserFacade->updateMerchantUser($merchantUserTransfer);
@@ -48,11 +43,6 @@ class MerchantUserUpdater implements MerchantUserUpdaterInterface
         $this->executePostChangePlugins($merchantUserTransfer);
     }
 
-    /**
-     * @param string $newPassword
-     *
-     * @return void
-     */
     public function updateCurrentMerchantUserPassword(string $newPassword): void
     {
         $currentMerchantUserTransfer = $this->updateMerchantUserPassword(
@@ -63,12 +53,6 @@ class MerchantUserUpdater implements MerchantUserUpdaterInterface
         $this->merchantUserFacade->setCurrentMerchantUser($currentMerchantUserTransfer);
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\MerchantUserTransfer $merchantUserTransfer
-     * @param string $newPassword
-     *
-     * @return \Generated\Shared\Transfer\MerchantUserTransfer
-     */
     protected function updateMerchantUserPassword(
         MerchantUserTransfer $merchantUserTransfer,
         string $newPassword
@@ -81,11 +65,6 @@ class MerchantUserUpdater implements MerchantUserUpdaterInterface
         return $this->executePostChangePlugins($merchantUserTransfer);
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\MerchantUserTransfer $merchantUserTransfer
-     *
-     * @return \Generated\Shared\Transfer\MerchantUserTransfer
-     */
     protected function executePostChangePlugins(
         MerchantUserTransfer $merchantUserTransfer
     ): MerchantUserTransfer {

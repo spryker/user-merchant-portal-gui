@@ -11,11 +11,6 @@ use Generated\Shared\Transfer\MerchantUserTransfer;
 
 interface MerchantUserUpdaterInterface
 {
-    /**
-     * @param \Generated\Shared\Transfer\MerchantUserTransfer $merchantUserTransfer
-     *
-     * @return void
-     */
     public function updateMerchantUser(MerchantUserTransfer $merchantUserTransfer): void;
 
     /**

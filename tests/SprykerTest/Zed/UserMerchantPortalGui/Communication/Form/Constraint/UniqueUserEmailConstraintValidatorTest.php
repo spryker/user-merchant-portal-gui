@@ -30,17 +30,11 @@ use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
  */
 class UniqueUserEmailConstraintValidatorTest extends ConstraintValidatorTestCase
 {
-    /**
-     * @return \Symfony\Component\Validator\ConstraintValidator
-     */
     protected function createValidator(): ConstraintValidator
     {
         return new UniqueUserEmailConstraintValidator();
     }
 
-    /**
-     * @return void
-     */
     public function testReturnsSuccessForNonExistingUserEmail(): void
     {
         // Arrange
@@ -55,9 +49,6 @@ class UniqueUserEmailConstraintValidatorTest extends ConstraintValidatorTestCase
         $this->assertNoViolation();
     }
 
-    /**
-     * @return void
-     */
     public function testReturnsErrorForExistingUserEmail(): void
     {
         // Arrange
@@ -74,9 +65,6 @@ class UniqueUserEmailConstraintValidatorTest extends ConstraintValidatorTestCase
             ->assertRaised();
     }
 
-    /**
-     * @return void
-     */
     public function testReturnsSuccessWhenUserIsSameForExistingEmail(): void
     {
         // Arrange
@@ -93,9 +81,6 @@ class UniqueUserEmailConstraintValidatorTest extends ConstraintValidatorTestCase
         $this->assertNoViolation();
     }
 
-    /**
-     * @return void
-     */
     public function testReturnsErrorWhenUserIsNotSameForExistingEmail(): void
     {
         // Arrange

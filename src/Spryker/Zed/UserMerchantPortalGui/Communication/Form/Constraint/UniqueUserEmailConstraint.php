@@ -42,25 +42,16 @@ class UniqueUserEmailConstraint extends Constraint
      */
     protected ?int $idUser = null;
 
-    /**
-     * @return \Spryker\Zed\UserMerchantPortalGui\Dependency\Facade\UserMerchantPortalGuiToMerchantUserFacadeInterface
-     */
     public function getMerchantUserFacade(): UserMerchantPortalGuiToMerchantUserFacadeInterface
     {
         return $this->merchantUserFacade;
     }
 
-    /**
-     * @return string
-     */
     public function getMessage(): string
     {
         return 'A user with this email already exists.';
     }
 
-    /**
-     * @return int|null
-     */
     public function getIdUser(): ?int
     {
         return $this->idUser;

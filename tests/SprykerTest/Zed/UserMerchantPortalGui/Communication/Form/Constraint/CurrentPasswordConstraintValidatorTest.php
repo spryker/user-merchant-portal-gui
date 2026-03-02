@@ -30,17 +30,11 @@ use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
  */
 class CurrentPasswordConstraintValidatorTest extends ConstraintValidatorTestCase
 {
-    /**
-     * @return \Symfony\Component\Validator\ConstraintValidator
-     */
     protected function createValidator(): ConstraintValidator
     {
         return new CurrentPasswordConstraintValidator();
     }
 
-    /**
-     * @return void
-     */
     public function testReturnsSuccessForCorrectPassword(): void
     {
         // Arrange
@@ -55,9 +49,6 @@ class CurrentPasswordConstraintValidatorTest extends ConstraintValidatorTestCase
         $this->assertNoViolation();
     }
 
-    /**
-     * @return void
-     */
     public function testReturnsErrorForExistingUserEmail(): void
     {
         // Arrange

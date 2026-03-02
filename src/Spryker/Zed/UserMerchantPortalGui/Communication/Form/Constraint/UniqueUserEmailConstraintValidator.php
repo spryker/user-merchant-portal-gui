@@ -37,12 +37,6 @@ class UniqueUserEmailConstraintValidator extends ConstraintValidator
         }
     }
 
-    /**
-     * @param string|null $email
-     * @param \Spryker\Zed\UserMerchantPortalGui\Communication\Form\Constraint\UniqueUserEmailConstraint $constraint
-     *
-     * @return bool
-     */
     protected function isUniqueUserEmail(?string $email, UniqueUserEmailConstraint $constraint): bool
     {
         if (!$email) {
@@ -57,12 +51,6 @@ class UniqueUserEmailConstraintValidator extends ConstraintValidator
         return $constraint->getIdUser() === $userTransfer->getIdUser();
     }
 
-    /**
-     * @param \Spryker\Zed\UserMerchantPortalGui\Communication\Form\Constraint\UniqueUserEmailConstraint $constraint
-     * @param string $email
-     *
-     * @return \Generated\Shared\Transfer\UserTransfer|null
-     */
     protected function findUserTransfer(UniqueUserEmailConstraint $constraint, string $email): ?UserTransfer
     {
         $userCriteriaTransfer = $this->createUserCriteriaTransfer($email);
@@ -71,11 +59,6 @@ class UniqueUserEmailConstraintValidator extends ConstraintValidator
         return $userCollectionTransfer->getUsers()->getIterator()->current();
     }
 
-    /**
-     * @param string $email
-     *
-     * @return \Generated\Shared\Transfer\UserCriteriaTransfer
-     */
     protected function createUserCriteriaTransfer(string $email): UserCriteriaTransfer
     {
         $userConditionsTransfer = (new UserConditionsTransfer())->addUsername($email);

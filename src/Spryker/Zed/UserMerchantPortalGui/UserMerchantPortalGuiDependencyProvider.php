@@ -51,11 +51,6 @@ class UserMerchantPortalGuiDependencyProvider extends AbstractBundleDependencyPr
      */
     public const PLUGINS_MERCHANT_USER_POST_CHANGE_PLUGINS = 'PLUGINS_MERCHANT_USER_POST_CHANGE_PLUGINS';
 
-    /**
-     * @param \Spryker\Zed\Kernel\Container $container
-     *
-     * @return \Spryker\Zed\Kernel\Container
-     */
     public function provideCommunicationLayerDependencies(Container $container): Container
     {
         parent::provideCommunicationLayerDependencies($container);
@@ -71,11 +66,6 @@ class UserMerchantPortalGuiDependencyProvider extends AbstractBundleDependencyPr
         return $container;
     }
 
-    /**
-     * @param \Spryker\Zed\Kernel\Container $container
-     *
-     * @return \Spryker\Zed\Kernel\Container
-     */
     protected function addLocaleFacade(Container $container): Container
     {
         $container->set(static::FACADE_LOCALE, function (Container $container) {
@@ -85,11 +75,6 @@ class UserMerchantPortalGuiDependencyProvider extends AbstractBundleDependencyPr
         return $container;
     }
 
-    /**
-     * @param \Spryker\Zed\Kernel\Container $container
-     *
-     * @return \Spryker\Zed\Kernel\Container
-     */
     protected function addMerchantUserFacade(Container $container): Container
     {
         $container->set(static::FACADE_MERCHANT_USER, function (Container $container) {
@@ -99,11 +84,6 @@ class UserMerchantPortalGuiDependencyProvider extends AbstractBundleDependencyPr
         return $container;
     }
 
-    /**
-     * @param \Spryker\Zed\Kernel\Container $container
-     *
-     * @return \Spryker\Zed\Kernel\Container
-     */
     protected function addTranslatorFacade(Container $container): Container
     {
         $container->set(static::FACADE_TRANSLATOR, function (Container $container) {
@@ -113,11 +93,6 @@ class UserMerchantPortalGuiDependencyProvider extends AbstractBundleDependencyPr
         return $container;
     }
 
-    /**
-     * @param \Spryker\Zed\Kernel\Container $container
-     *
-     * @return \Spryker\Zed\Kernel\Container
-     */
     protected function addSecurityBlockerClient(Container $container): Container
     {
         $container->set(static::CLIENT_SECURITY_BLOCKER, function (Container $container) {
@@ -129,11 +104,6 @@ class UserMerchantPortalGuiDependencyProvider extends AbstractBundleDependencyPr
         return $container;
     }
 
-    /**
-     * @param \Spryker\Zed\Kernel\Container $container
-     *
-     * @return \Spryker\Zed\Kernel\Container
-     */
     protected function addMerchantUserPostChangePlugin(Container $container): Container
     {
         $container->set(static::PLUGINS_MERCHANT_USER_POST_CHANGE_PLUGINS, function () {
@@ -143,11 +113,6 @@ class UserMerchantPortalGuiDependencyProvider extends AbstractBundleDependencyPr
         return $container;
     }
 
-    /**
-     * @param \Spryker\Zed\Kernel\Container $container
-     *
-     * @return \Spryker\Zed\Kernel\Container
-     */
     protected function addZedUiFactory(Container $container): Container
     {
         $container->set(static::SERVICE_ZED_UI_FACTORY, function (Container $container) {

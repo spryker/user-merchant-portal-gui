@@ -15,9 +15,6 @@ use Generated\Shared\Transfer\UserCriteriaTransfer;
 
 interface UserMerchantPortalGuiToMerchantUserFacadeInterface
 {
-    /**
-     * @return \Generated\Shared\Transfer\MerchantUserTransfer
-     */
     public function getCurrentMerchantUser(): MerchantUserTransfer;
 
     /**
@@ -27,34 +24,13 @@ interface UserMerchantPortalGuiToMerchantUserFacadeInterface
      */
     public function setCurrentMerchantUser(MerchantUserTransfer $merchantUserTransfer);
 
-    /**
-     * @param \Generated\Shared\Transfer\MerchantUserTransfer $merchantUserTransfer
-     *
-     * @return \Generated\Shared\Transfer\MerchantUserResponseTransfer
-     */
     public function updateMerchantUser(
         MerchantUserTransfer $merchantUserTransfer
     ): MerchantUserResponseTransfer;
 
-    /**
-     * @param \Generated\Shared\Transfer\MerchantUserCriteriaTransfer $merchantUserCriteriaTransfer
-     *
-     * @return \Generated\Shared\Transfer\MerchantUserTransfer|null
-     */
     public function findMerchantUser(MerchantUserCriteriaTransfer $merchantUserCriteriaTransfer): ?MerchantUserTransfer;
 
-    /**
-     * @param string $password
-     * @param string $hash
-     *
-     * @return bool
-     */
     public function isValidPassword(string $password, string $hash): bool;
 
-    /**
-     * @param \Generated\Shared\Transfer\UserCriteriaTransfer $userCriteriaTransfer
-     *
-     * @return \Generated\Shared\Transfer\UserCollectionTransfer
-     */
     public function getUserCollection(UserCriteriaTransfer $userCriteriaTransfer): UserCollectionTransfer;
 }

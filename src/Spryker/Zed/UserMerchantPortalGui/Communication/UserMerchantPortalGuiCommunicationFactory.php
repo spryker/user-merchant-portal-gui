@@ -54,9 +54,6 @@ class UserMerchantPortalGuiCommunicationFactory extends AbstractCommunicationFac
         );
     }
 
-    /**
-     * @return \Spryker\Zed\UserMerchantPortalGui\Communication\Form\DataProvider\ChangeEmailFormDataProvider
-     */
     public function createChangeEmailFormDataProvider(): ChangeEmailFormDataProvider
     {
         return new ChangeEmailFormDataProvider(
@@ -64,11 +61,6 @@ class UserMerchantPortalGuiCommunicationFactory extends AbstractCommunicationFac
         );
     }
 
-    /**
-     * @param int $idUser
-     *
-     * @return \Symfony\Component\Validator\Constraint
-     */
     public function createUniqueUserEmailConstraint(int $idUser): Constraint
     {
         return new UniqueUserEmailConstraint([
@@ -77,9 +69,6 @@ class UserMerchantPortalGuiCommunicationFactory extends AbstractCommunicationFac
         ]);
     }
 
-    /**
-     * @return \Symfony\Component\Form\FormInterface
-     */
     public function createChangePasswordForm(): FormInterface
     {
         return $this->getFormFactory()->create(ChangePasswordForm::class);
@@ -96,9 +85,6 @@ class UserMerchantPortalGuiCommunicationFactory extends AbstractCommunicationFac
         return $this->getFormFactory()->create(ChangeEmailForm::class, $data, $options);
     }
 
-    /**
-     * @return \Symfony\Component\Validator\Constraint
-     */
     public function createCurrentPasswordConstraint(): Constraint
     {
         return new CurrentPasswordConstraint([
@@ -106,9 +92,6 @@ class UserMerchantPortalGuiCommunicationFactory extends AbstractCommunicationFac
         ]);
     }
 
-    /**
-     * @return \Spryker\Zed\UserMerchantPortalGui\Communication\Updater\MerchantUserUpdaterInterface
-     */
     public function createMerchantUserUpdater(): MerchantUserUpdaterInterface
     {
         return new MerchantUserUpdater(
@@ -117,25 +100,16 @@ class UserMerchantPortalGuiCommunicationFactory extends AbstractCommunicationFac
         );
     }
 
-    /**
-     * @return \Spryker\Zed\UserMerchantPortalGui\Dependency\Facade\UserMerchantPortalGuiToLocaleFacadeInterface
-     */
     public function getLocaleFacade(): UserMerchantPortalGuiToLocaleFacadeInterface
     {
         return $this->getProvidedDependency(UserMerchantPortalGuiDependencyProvider::FACADE_LOCALE);
     }
 
-    /**
-     * @return \Spryker\Zed\UserMerchantPortalGui\Dependency\Facade\UserMerchantPortalGuiToMerchantUserFacadeInterface
-     */
     public function getMerchantUserFacade(): UserMerchantPortalGuiToMerchantUserFacadeInterface
     {
         return $this->getProvidedDependency(UserMerchantPortalGuiDependencyProvider::FACADE_MERCHANT_USER);
     }
 
-    /**
-     * @return \Spryker\Zed\UserMerchantPortalGui\Dependency\Client\UserMerchantPortalGuiToSecurityBlockerClientInterface
-     */
     public function getSecurityBlockerClient(): UserMerchantPortalGuiToSecurityBlockerClientInterface
     {
         return $this->getProvidedDependency(UserMerchantPortalGuiDependencyProvider::CLIENT_SECURITY_BLOCKER);
@@ -149,17 +123,11 @@ class UserMerchantPortalGuiCommunicationFactory extends AbstractCommunicationFac
         return $this->getProvidedDependency(UserMerchantPortalGuiDependencyProvider::PLUGINS_MERCHANT_USER_POST_CHANGE_PLUGINS);
     }
 
-    /**
-     * @return \Spryker\Zed\UserMerchantPortalGui\Dependency\Facade\UserMerchantPortalGuiToTranslatorFacadeInterface
-     */
     public function getTranslatorFacade(): UserMerchantPortalGuiToTranslatorFacadeInterface
     {
         return $this->getProvidedDependency(UserMerchantPortalGuiDependencyProvider::FACADE_TRANSLATOR);
     }
 
-    /**
-     * @return \Spryker\Shared\ZedUi\ZedUiFactoryInterface
-     */
     public function getZedUiFactory(): ZedUiFactoryInterface
     {
         return $this->getProvidedDependency(UserMerchantPortalGuiDependencyProvider::SERVICE_ZED_UI_FACTORY);

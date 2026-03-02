@@ -51,11 +51,6 @@ class UserMerchantPortalGuiToLocaleFacadeBridge implements UserMerchantPortalGui
         return $this->localeFacade->getAvailableLocales();
     }
 
-    /**
-     * @param int $idLocale
-     *
-     * @return \Generated\Shared\Transfer\LocaleTransfer
-     */
     public function getLocaleById(int $idLocale): LocaleTransfer
     {
         return $this->localeFacade->getLocaleById($idLocale);

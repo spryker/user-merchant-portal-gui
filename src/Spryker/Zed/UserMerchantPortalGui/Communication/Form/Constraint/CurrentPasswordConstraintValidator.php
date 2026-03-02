@@ -34,12 +34,6 @@ class CurrentPasswordConstraintValidator extends ConstraintValidator
         }
     }
 
-    /**
-     * @param string|null $password
-     * @param \Spryker\Zed\UserMerchantPortalGui\Communication\Form\Constraint\CurrentPasswordConstraint $constraint
-     *
-     * @return bool
-     */
     protected function isValidPassword(?string $password, CurrentPasswordConstraint $constraint): bool
     {
         if (!$password) {
