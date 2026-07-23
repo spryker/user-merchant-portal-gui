@@ -7,6 +7,8 @@
 
 namespace Spryker\Zed\UserMerchantPortalGui\Communication\Form\Constraint;
 
+use Generated\Shared\Transfer\UserConditionsTransfer;
+use Generated\Shared\Transfer\UserCriteriaTransfer;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -41,9 +43,13 @@ class CurrentPasswordConstraintValidator extends ConstraintValidator
         }
 
         $merchantUserFacade = $constraint->getMerchantUserFacade();
-        $currentUser = $merchantUserFacade->getCurrentMerchantUser()->getUserOrFail();
+        $idUser = $merchantUserFacade->getCurrentMerchantUser()->getUserOrFail()->getIdUserOrFail();
 
-        return $merchantUserFacade
-            ->isValidPassword($password, $currentUser->getPasswordOrFail());
+        $userCriteriaTransfer = (new UserCriteriaTransfer())
+            ->setUserConditions((new UserConditionsTransfer())->addIdUser($idUser));
+
+        $userTransfer = $merchantUserFacade->getUserCollection($userCriteriaTransfer)->getUsers()->getIterator()->current();
+
+        return $merchantUserFacade->isValidPassword($password, $userTransfer->getPasswordOrFail());
     }
 }

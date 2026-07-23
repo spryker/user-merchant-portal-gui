@@ -8,6 +8,7 @@
 namespace SprykerTest\Zed\UserMerchantPortalGui\Communication\Form\Constraint;
 
 use Generated\Shared\Transfer\MerchantUserTransfer;
+use Generated\Shared\Transfer\UserCollectionTransfer;
 use Generated\Shared\Transfer\UserTransfer;
 use PHPUnit\Framework\MockObject\MockObject;
 use Spryker\Zed\UserMerchantPortalGui\Communication\Form\Constraint\CurrentPasswordConstraint;
@@ -88,13 +89,22 @@ class CurrentPasswordConstraintValidatorTest extends ConstraintValidatorTestCase
         $merchantUserFacade = $this->getMockBuilder(UserMerchantPortalGuiToMerchantUserFacadeInterface::class)
             ->getMock();
 
-        $user = (new UserTransfer())
+        $sessionUserTransfer = (new UserTransfer())->setIdUser(1);
+
+        $dbUserTransfer = (new UserTransfer())
+            ->setIdUser(1)
             ->setPassword('uS6ahmishuveexe8aiG0tuukeingaxuu2siex2quaiYeeph8Raetah0gei0xa9fo');
 
         $merchantUserFacade
             ->method('getCurrentMerchantUser')
             ->willReturn(
-                (new MerchantUserTransfer())->setUser($user),
+                (new MerchantUserTransfer())->setUser($sessionUserTransfer),
+            );
+
+        $merchantUserFacade
+            ->method('getUserCollection')
+            ->willReturn(
+                (new UserCollectionTransfer())->addUser($dbUserTransfer),
             );
 
         $merchantUserFacade
