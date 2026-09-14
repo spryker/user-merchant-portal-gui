@@ -28,11 +28,6 @@ class UniqueUserEmailConstraint extends Constraint
     public const GROUP_UNIQUE_USERNAME_CHECK = 'unique_email_check';
 
     /**
-     * @var array<string>
-     */
-    public $groups = [self::GROUP_UNIQUE_USERNAME_CHECK];
-
-    /**
      * @var \Spryker\Zed\UserMerchantPortalGui\Dependency\Facade\UserMerchantPortalGuiToMerchantUserFacadeInterface
      */
     protected UserMerchantPortalGuiToMerchantUserFacadeInterface $merchantUserFacade;
