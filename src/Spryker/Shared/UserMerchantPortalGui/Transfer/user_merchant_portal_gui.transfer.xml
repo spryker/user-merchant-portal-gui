@@ -42,6 +42,7 @@
 
     <transfer name="UserConditions" strict="true">
         <property name="usernames" type="string[]" singular="username"/>
+        <property name="userIds" type="int[]" singular="idUser" description="A collection of user identifiers."/>
     </transfer>
 
     <transfer name="UserCollection" strict="true">
