@@ -9,6 +9,7 @@ namespace Spryker\Zed\UserMerchantPortalGui\Communication\Controller;
 
 use Spryker\Zed\Kernel\Communication\Controller\AbstractController;
 use Spryker\Zed\UserMerchantPortalGui\Communication\Form\ChangePasswordForm;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -32,20 +33,22 @@ class ChangePasswordController extends AbstractController
      */
     protected const ERROR_ACCESS_DENIED_CAUSE = 'access_denied';
 
+    protected const string RESPONSE_NOTIFICATION_MESSAGE_PASSWORD_CHANGE_LIMIT_EXCEEDED = 'You reached the limit of password change attempts. Please try again later.';
+
     public function indexAction(Request $request): JsonResponse
     {
-        $changePasswordForm = $this->getFactory()
-            ->createChangePasswordForm()
-            ->handleRequest($request);
+        $changePasswordForm = $this->getFactory()->createChangePasswordForm();
 
-        $responseData = [
-            'form' => $this->renderView(
-                '@UserMerchantPortalGui/Partials/change-password-form-overlay.twig',
-                [
-                    'changePasswordForm' => $changePasswordForm->createView(),
-                ],
-            )->getContent(),
-        ];
+        if ($this->isFormSubmitRequest($changePasswordForm, $request) && !$this->reservePasswordChangeAttempt()) {
+            return $this->createNotificationResponse(
+                $this->createResponseData($changePasswordForm),
+                static::RESPONSE_NOTIFICATION_MESSAGE_PASSWORD_CHANGE_LIMIT_EXCEEDED,
+                false,
+            );
+        }
+
+        $changePasswordForm->handleRequest($request);
+        $responseData = $this->createResponseData($changePasswordForm);
 
         if (!$changePasswordForm->isSubmitted()) {
             return new JsonResponse($responseData);
@@ -60,20 +63,7 @@ class ChangePasswordController extends AbstractController
                     $formData[ChangePasswordForm::FIELD_NEW_PASSWORD],
                 );
 
-            $zedUiFormResponseTransfer = $this->getFactory()
-                ->getZedUiFactory()
-                ->createZedUiFormResponseBuilder()
-                ->addSuccessNotification(
-                    $this->getFactory()
-                        ->getTranslatorFacade()
-                        ->trans(static::RESPONSE_NOTIFICATION_MESSAGE_SUCCESS),
-                )
-                ->addActionCloseDrawer()
-                ->createResponse();
-
-            $responseData = array_merge($responseData, $zedUiFormResponseTransfer->toArray());
-
-            return new JsonResponse($responseData);
+            return $this->createNotificationResponse($responseData, static::RESPONSE_NOTIFICATION_MESSAGE_SUCCESS, true);
         }
 
         $errorMessage = static::RESPONSE_NOTIFICATION_MESSAGE_ERROR;
@@ -87,18 +77,63 @@ class ChangePasswordController extends AbstractController
             $errorMessage = $error->getMessage();
         }
 
-        $zedUiFormResponseTransfer = $this->getFactory()
+        return $this->createNotificationResponse($responseData, $errorMessage, false);
+    }
+
+    protected function isFormSubmitRequest(FormInterface $form, Request $request): bool
+    {
+        return $request->isMethod($form->getConfig()->getMethod()) && $request->request->has($form->getName());
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    protected function createResponseData(FormInterface $changePasswordForm): array
+    {
+        return [
+            'form' => $this->renderView(
+                '@UserMerchantPortalGui/Partials/change-password-form-overlay.twig',
+                [
+                    'changePasswordForm' => $changePasswordForm->createView(),
+                ],
+            )->getContent(),
+        ];
+    }
+
+    protected function reservePasswordChangeAttempt(): bool
+    {
+        $idUser = $this->getFactory()
+            ->getMerchantUserFacade()
+            ->getCurrentMerchantUser()
+            ->getUserOrFail()
+            ->getIdUserOrFail();
+
+        return $this->getFactory()
+            ->createPasswordChangeLimiter()
+            ->reserveAttempt($idUser);
+    }
+
+    /**
+     * @param array<string, mixed> $responseData
+     */
+    protected function createNotificationResponse(array $responseData, string $message, bool $isSuccess): JsonResponse
+    {
+        $zedUiFormResponseBuilder = $this->getFactory()
             ->getZedUiFactory()
-            ->createZedUiFormResponseBuilder()
-            ->addErrorNotification(
-                $this->getFactory()
-                    ->getTranslatorFacade()
-                    ->trans($errorMessage),
-            )
-            ->createResponse();
+            ->createZedUiFormResponseBuilder();
 
-        $responseData = array_merge($responseData, $zedUiFormResponseTransfer->toArray());
+        $translatedMessage = $this->getFactory()
+            ->getTranslatorFacade()
+            ->trans($message);
 
-        return new JsonResponse($responseData);
+        if (!$isSuccess) {
+            $zedUiFormResponseBuilder->addErrorNotification($translatedMessage);
+        } else {
+            $zedUiFormResponseBuilder
+                ->addSuccessNotification($translatedMessage)
+                ->addActionCloseDrawer();
+        }
+
+        return new JsonResponse(array_merge($responseData, $zedUiFormResponseBuilder->createResponse()->toArray()));
     }
 }

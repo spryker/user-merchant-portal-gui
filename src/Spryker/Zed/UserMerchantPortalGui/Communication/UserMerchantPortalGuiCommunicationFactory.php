@@ -17,6 +17,8 @@ use Spryker\Zed\UserMerchantPortalGui\Communication\Form\DataProvider\ChangeEmai
 use Spryker\Zed\UserMerchantPortalGui\Communication\Form\DataProvider\MerchantAccountFormDataProvider;
 use Spryker\Zed\UserMerchantPortalGui\Communication\Form\DataProvider\MerchantAccountFormDataProviderInterface;
 use Spryker\Zed\UserMerchantPortalGui\Communication\Form\MerchantAccountForm;
+use Spryker\Zed\UserMerchantPortalGui\Communication\Limiter\PasswordChangeLimiter;
+use Spryker\Zed\UserMerchantPortalGui\Communication\Limiter\PasswordChangeLimiterInterface;
 use Spryker\Zed\UserMerchantPortalGui\Communication\Updater\MerchantUserUpdater;
 use Spryker\Zed\UserMerchantPortalGui\Communication\Updater\MerchantUserUpdaterInterface;
 use Spryker\Zed\UserMerchantPortalGui\Dependency\Client\UserMerchantPortalGuiToSecurityBlockerClientInterface;
@@ -72,6 +74,14 @@ class UserMerchantPortalGuiCommunicationFactory extends AbstractCommunicationFac
     public function createChangePasswordForm(): FormInterface
     {
         return $this->getFormFactory()->create(ChangePasswordForm::class);
+    }
+
+    public function createPasswordChangeLimiter(): PasswordChangeLimiterInterface
+    {
+        return new PasswordChangeLimiter(
+            $this->getSecurityBlockerClient(),
+            $this->getConfig(),
+        );
     }
 
     /**

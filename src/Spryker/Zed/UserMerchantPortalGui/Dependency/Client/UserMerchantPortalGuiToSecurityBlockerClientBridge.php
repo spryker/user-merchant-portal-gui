@@ -7,6 +7,8 @@
 
 namespace Spryker\Zed\UserMerchantPortalGui\Dependency\Client;
 
+use Generated\Shared\Transfer\SecurityCheckAttemptContextTransfer;
+use Generated\Shared\Transfer\SecurityCheckAttemptResponseTransfer;
 use Generated\Shared\Transfer\SecurityCheckAuthContextTransfer;
 use Generated\Shared\Transfer\SecurityCheckAuthResponseTransfer;
 
@@ -33,5 +35,10 @@ class UserMerchantPortalGuiToSecurityBlockerClientBridge implements UserMerchant
     public function isAccountBlocked(SecurityCheckAuthContextTransfer $securityCheckAuthContextTransfer): SecurityCheckAuthResponseTransfer
     {
         return $this->securityBlockerClient->isAccountBlocked($securityCheckAuthContextTransfer);
+    }
+
+    public function incrementAttemptCount(SecurityCheckAttemptContextTransfer $securityCheckAttemptContextTransfer): SecurityCheckAttemptResponseTransfer
+    {
+        return $this->securityBlockerClient->incrementAttemptCount($securityCheckAttemptContextTransfer);
     }
 }
